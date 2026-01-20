@@ -37,12 +37,14 @@ and reflects historical retail performance rather than controlled experiments.
 - Results should be interpreted as descriptive insights rather than predictive outcomes.
 
 ## Project Structure
-├── notebooks/
-│ ├── 01_EDA_profitability_analysis.ipynb
-│ └── 02_statistical_tests.ipynb
-├── data/
-│ └── raw/
-├── README.md
+
+- notebooks/
+  - 01_EDA_profitability_analysis.ipynb
+  - 02_statistical_tests.ipynb
+- data/
+  - raw/
+- README.md
+
 
 
 ## Tools Used
@@ -54,3 +56,4 @@ and reflects historical retail performance rather than controlled experiments.
 ## Status
 Complete. This project emphasizes exploratory analysis and statistical validation to
 support business decision-making rather than predictive modeling.
+
