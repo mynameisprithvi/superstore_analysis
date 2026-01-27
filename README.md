@@ -77,6 +77,9 @@ and reflects historical retail operations rather than controlled experiments.
 - data/
   - raw/
   - processed/
+-scripts/
+  - data_ingest.py
+  - preprocessing.py
 - README.md
 
 
@@ -94,5 +97,6 @@ and reflects historical retail operations rather than controlled experiments.
 Complete.  
 This project prioritizes clear analysis, statistical validation, and practical prediction,
 with careful attention to interpretation and limitations.
+
 
 
