@@ -70,17 +70,29 @@ and reflects historical retail operations rather than controlled experiments.
 
 ## Project Structure
 
-- notebooks/
-  - 01_EDA_profitability_analysis.ipynb
-  - 02_statistical_tests.ipynb
-  - 03_discount_prediction_model.ipynb
-- data/
-  - raw/
-  - processed/
--scripts/
-  - data_ingest.py
-  - preprocessing.py
-- README.md
+notebooks/
+- 01_EDA_profitability_analysis.ipynb
+- 02_statistical_tests.ipynb
+- 03_discount_prediction_model.ipynb
+
+data/
+- raw/
+- processed/
+
+scripts/
+- data_ingest.py
+- preprocessing.py
+
+models/
+- discount_model.joblib
+
+.github/
+- workflows/
+  - train.yml
+
+run_training.py
+requirements.txt
+README.md
 
 
 
@@ -108,6 +120,7 @@ On every push to the main branch:
 - The trained model artifact is generated and stored
 
 This ensures the machine learning workflow is reproducible and environment-independent.
+
 
 
 
