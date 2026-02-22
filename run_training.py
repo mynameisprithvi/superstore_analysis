@@ -1,72 +1,40 @@
-import pandas as pd
+import joblib
 from pathlib import Path
 from sklearn.model_selection import train_test_split
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.pipeline import Pipeline
-from xgboost import XGBRegressor
-import joblib
+
+from scripts.data_ingest import load_raw, save_raw_parquet
+from scripts.preprocessing import load_parquet, preprocess, save_processed
+from scripts.train import build_training_pipeline
+
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR / "data" / "processed" / "superstore_processed.parquet"
 MODEL_OUTPUT = BASE_DIR / "models" / "discount_model.joblib"
 
-df = pd.read_parquet(DATA_PATH)
 
-assert "Discount" in df.columns, "Target variable missing"
+# 1) Ingest
+df_raw = load_raw(BASE_DIR)
+save_raw_parquet(df_raw, BASE_DIR)
 
+# 2) Preprocess
+df_loaded = load_parquet(BASE_DIR)
+df_processed = preprocess(df_loaded)
+save_processed(df_processed, BASE_DIR)
+
+# 3) Prepare features
 target = "Discount"
-X = df.drop(columns=[target])
-y = df[target]
+X = df_processed.drop(columns=[target])
+y = df_processed[target]
 
-# -----------------------
-# Split
-# -----------------------
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# -----------------------
-# Preprocessing
-# -----------------------
-categorical_cols = X.select_dtypes(include="object").columns
-numeric_cols = X.select_dtypes(exclude="object").columns
-
-preprocessor = ColumnTransformer(
-    transformers=[
-        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_cols),
-        ("num", "passthrough", numeric_cols),
-    ]
-)
-
-# -----------------------
-# Model
-# -----------------------
-model = XGBRegressor(
-    n_estimators=200,
-    max_depth=6,
-    learning_rate=0.05,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    random_state=42
-)
-
-pipeline = Pipeline(
-    steps=[
-        ("preprocessor", preprocessor),
-        ("model", model),
-    ]
-)
-
-# -----------------------
-# Train
-# -----------------------
+# 4) Train model
+pipeline = build_training_pipeline(X_train)
 pipeline.fit(X_train, y_train)
 
-# -----------------------
-# Save model
-# -----------------------
+# 5) Save model
 MODEL_OUTPUT.parent.mkdir(exist_ok=True)
 joblib.dump(pipeline, MODEL_OUTPUT)
 
-print("Model training complete. Saved to:", MODEL_OUTPUT)
+print("Full ML pipeline complete. Model saved.")
