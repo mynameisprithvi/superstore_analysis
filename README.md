@@ -113,7 +113,7 @@ and reproducible machine learning workflow design.
 
 ---
 
-## Continuous Integration (CI)
+## ML Pipeline, CI/CD
 
 This project includes an automated machine learning pipeline using GitHub Actions.
 
@@ -125,3 +125,9 @@ On every push to the main branch:
 
 This ensures the full ML workflow (ingestion → preprocessing → training → artifact generation)  
 is reproducible and environment-independent.
+
+Additionally, each successful pipeline run publishes a versioned trained model
+to GitHub Releases. This enables consistent tracking of model iterations and
+automated delivery of updated models.
+
+
