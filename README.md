@@ -98,5 +98,17 @@ Complete.
 This project prioritizes clear analysis, statistical validation, and practical prediction,
 with careful attention to interpretation and limitations.
 
+## Continuous Integration (CI)
+
+This project includes an automated training pipeline using GitHub Actions.
+
+On every push to the main branch:
+- Dependencies are installed in a clean environment
+- The training script (`run_training.py`) is executed
+- The trained model artifact is generated and stored
+
+This ensures the machine learning workflow is reproducible and environment-independent.
+
+
 
 
