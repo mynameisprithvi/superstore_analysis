@@ -1,4 +1,4 @@
-name: Train Discount Model CI
+name: Train Discount Model CI/CD
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 jobs:
   train:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # REQUIRED for creating releases
 
     steps:
       - name: Checkout repo
@@ -31,3 +33,12 @@ jobs:
         with:
           name: trained-discount-model
           path: models/discount_model.joblib
+
+      - name: Publish trained model to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: superstore-model-${{ github.run_number }}
+          name: Superstore Model ${{ github.run_number }}
+          files: models/discount_model.joblib
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
